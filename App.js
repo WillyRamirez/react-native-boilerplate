@@ -1,19 +1,17 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect } from 'react';
 import './src/common/Config';
+import './src/common/Api';
+import './src/common/Interceptors';
+import Router from './src/Router';
+import AuthContextProvider from './src/authentication/store/AuthContext';
 
 const App: () => Node = () => {
+
   return (
-    <NavigationContainer>{/* Rest of your app code */}</NavigationContainer>
+    <AuthContextProvider>
+      <Router />
+    </AuthContextProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-});
 
 export default App;
