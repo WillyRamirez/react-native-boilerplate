@@ -23,7 +23,6 @@ const Router = () => {
     onAppInit();
   }, []);
 
-
   return (
     <NavigationContainer>
       <Stack.Navigator>

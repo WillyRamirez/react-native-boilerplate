@@ -1,5 +1,5 @@
 import { apiConfig, api } from './Api';
-import secureStore from './SecureStorageService';
+import secureStore from '../SecureStorageService';
 import axios from 'axios';
 
 apiConfig.axiosInstance.interceptors.response.use(
@@ -12,7 +12,7 @@ apiConfig.axiosInstance.interceptors.response.use(
 
       if (err.response) {
         const isExpired = err.response.data.message?.indexOf('expired') > -1;
-        
+
         if (err.response.status === 403 && isExpired && err.config && !err.config.__isRetryRequest) {
           originalReq._retry = true;
           const refreshToken = await secureStore.get({ service: 'refreshToken' });

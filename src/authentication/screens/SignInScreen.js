@@ -1,6 +1,9 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet, TextInput, TouchableHighlight, Text } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, StyleSheet, TouchableHighlight, Text } from 'react-native';
 import UseAuth from '../store/UseAuth';
+import TextInputWithValidation from '../../common/components/TextInputWithValidation';
+import FormWithValidation from '../../common/components/FormWithValidation';
+import Button from '../../common/components/Button';
 import { AuthContext } from '../store/AuthContext';
 import { screens } from '../../Router';
 
@@ -10,40 +13,50 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.loginForm}>
-        <TextInput
+      <FormWithValidation
+        validFields={state.signInForm.validFields} style={styles.loginForm}
+        renderSubmitTouchable={formIsValid => (
+          <Button
+            isDisabled={!formIsValid}
+            onPress={onLoginPress}
+          >
+            <Text>Log in</Text>
+          </Button>
+        )}
+      >
+        <TextInputWithValidation
           style={styles.input}
           value={state.email}
           placeholder={'email'}
-          onChangeText={value => onSignInFieldChange('email', value)}
+          onChangeText={(value, isValid) => onSignInFieldChange('email', value, isValid)}
+          rules={['required', 'isEmail']}
+          errorMessages={['Email cannot be empty', 'Please enter a valid email address']}
         />
-        <TextInput
+        <TextInputWithValidation
           secureTextEntry
           style={styles.input}
           value={state.password}
           placeholder={'password'}
-          onChangeText={value => onSignInFieldChange('password', value)}
+          onChangeText={(value, isValid) => onSignInFieldChange('password', value, isValid)}
+          rules={['required']}
+          externalError={state.signInForm.errors}
+          errorMessages={['Password cannot be empty']}
         />
-        <TouchableHighlight
-          style={styles.loginButton}
-          onPress={onLoginPress}
-        >
-          <Text>Log in</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={styles.loginButton}
+
+      </FormWithValidation>
+
+
+        <Button
           onPress={testa}
         >
           <Text>test</Text>
-        </TouchableHighlight>
+        </Button>
 
-        <TouchableHighlight
-          style={styles.loginButton}
+        <Button
           onPress={() => navigation.navigate(screens.SIGN_UP_SCREEN)}
         >
           <Text>Sign up</Text>
-        </TouchableHighlight>
-      </View>
+        </Button>
     </View>
   );
 };
@@ -67,13 +80,7 @@ const styles = StyleSheet.create({
     height: 40,
     marginBottom: 10,
   },
-  loginButton: {
-    width: '100%',
-    backgroundColor: 'red',
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
 });
 
 export default SignInScreen;

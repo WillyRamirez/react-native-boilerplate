@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './src/common/Config';
-import './src/common/Api';
-import './src/common/Interceptors';
+import './src/common/api/Api';
+import './src/common/api/Interceptors';
 import Router from './src/Router';
 import AuthContextProvider from './src/authentication/store/AuthContext';
 

@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
 import update from 'immutability-helper';
+import { getValidFields } from '../../common/Util';
 
 export const AuthContext = React.createContext(null);
 
@@ -18,11 +19,15 @@ export const types = {
 
 const initialState = {
   signInForm: {
+    errors: {},
+    validFields: [],
     email: '',
     password: '',
   },
   user: {},
   signUpForm: {
+    errors: {},
+    validFields: [],
     first_name: '',
     last_name: '',
     username: '',
@@ -47,21 +52,40 @@ export function authReducer(state, action) {
         isLoading: { $set: false },
         isSignedIn: { $set: true },
         user: { $set: action.payload.user },
-      });    case types.SIGN_IN_USER_FAIL:
-      return update(state, { isLoading: { $set: false }, isSignedIn: { $set: false } });
+      });
+    case types.SIGN_IN_USER_FAIL:
+      return update(state, {
+        isLoading: { $set: false },
+        isSignedIn: { $set: false },
+        signInForm: { errors: { $set: action.payload.error } },
+      });
+    case types.SIGN_UP_USER_FAIL: {
+      let errorObj;
+      action.payload.errors.forEach(error => {
+        errorObj = {
+          ...errorObj,
+          [error.param]: { ...error },
+        };
+      });
+      return update(state, { signUpForm: { errors: { $set: errorObj } } });
+    }
     case types.ON_SIGN_IN_FIELD_CHANGE:
+      const validFields = getValidFields(state.signInForm.validFields, action.payload.key, action.payload.isValid)
       return update(state, {
         signInForm: {
           [action.payload.key]: { $set: action.payload.value },
+          validFields: { $set: validFields },
         },
       });
-    case types.ON_SIGN_UP_FIELD_CHANGE:
+    case types.ON_SIGN_UP_FIELD_CHANGE: {
+      const validFields = getValidFields(state.signUpForm.validFields, action.payload.key, action.payload.isValid)
       return update(state, {
         signUpForm: {
           [action.payload.key]: { $set: action.payload.value },
+          validFields: { $set: validFields },
         },
       });
-
+    }
     default:
       return state;
   }
