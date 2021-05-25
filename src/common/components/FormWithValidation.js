@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 const FormWithValidation = ({ children, style, validFields, renderSubmitTouchable }) => {
   const ValidatableInputs = children.filter(child => {
@@ -11,9 +11,17 @@ const FormWithValidation = ({ children, style, validFields, renderSubmitTouchabl
   return (
     <View style={style}>
       {children}
-      {renderSubmitTouchable(formIsValid)}
+      <View style={styles.buttonContainer}>
+        {renderSubmitTouchable(formIsValid)}
+      </View>
     </View>
   );
 };
 
-export default FormWithValidation;
+const styles = StyleSheet.create({
+  buttonContainer: {
+    alignItems: 'flex-end',
+  },
+});
+
+export { FormWithValidation };

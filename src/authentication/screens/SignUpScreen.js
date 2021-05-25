@@ -1,17 +1,15 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import TextInputWithValidation from '../../common/components/TextInputWithValidation';
-import FormWithValidation from '../../common/components/FormWithValidation';
+import { StyleSheet, Text, ScrollView } from 'react-native';
+import { TextInputWithValidation, FormWithValidation, Button } from '../../common/components/';
 import { AuthContext } from '../store/AuthContext';
 import UseAuth from '../store/UseAuth';
-import Button from '../../common/components/Button';
 
 const SignUpScreen = () => {
   const { state } = useContext(AuthContext);
   const { onSignUpFieldChange, onSignUpFormSubmit } = UseAuth();
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <FormWithValidation
         style={styles.signUpForm}
         validFields={state.signUpForm.validFields}
@@ -27,7 +25,7 @@ const SignUpScreen = () => {
         <TextInputWithValidation
           style={styles.input}
           value={state.signUpForm.first_name}
-          placeholder={'First name'}
+          label={'First name'}
           onChangeText={(value, isValid) => onSignUpFieldChange('first_name', value, isValid)}
           rules={['required', 'minStringLength:2', 'maxStringLength:30']}
           externalError={state.signUpForm.errors.first_name}
@@ -36,7 +34,7 @@ const SignUpScreen = () => {
         <TextInputWithValidation
           style={styles.input}
           value={state.signUpForm.last_name}
-          placeholder={'Last name'}
+          label={'Last name'}
           onChangeText={(value, isValid) => onSignUpFieldChange('last_name', value, isValid)}
           rules={['required', 'minStringLength:2', 'maxStringLength:30']}
           externalError={state.signUpForm.errors.last_name}
@@ -45,7 +43,7 @@ const SignUpScreen = () => {
         <TextInputWithValidation
           style={styles.input}
           value={state.signUpForm.username}
-          placeholder={'Username'}
+          label={'Username'}
           onChangeText={(value, isValid) => onSignUpFieldChange('username', value, isValid)}
           rules={['required', 'minStringLength:2', 'maxStringLength:20']}
           externalError={state.signUpForm.errors.username}
@@ -54,7 +52,7 @@ const SignUpScreen = () => {
         <TextInputWithValidation
           style={styles.input}
           value={state.signUpForm.email}
-          placeholder={'Email'}
+          label={'Email'}
           onChangeText={(value, isValid) => onSignUpFieldChange('email', value, isValid)}
           rules={['required', 'isEmail']}
           externalError={state.signUpForm.errors.email}
@@ -64,7 +62,7 @@ const SignUpScreen = () => {
           secureTextEntry
           style={styles.input}
           value={state.signUpForm.password}
-          placeholder={'Password'}
+          label={'Password'}
           onChangeText={(value, isValid) => onSignUpFieldChange('password', value, isValid)}
           rules={['required', 'matchRegexp:^(?=[a-zA-Z\\d_:?.+\\-=!#@$%^&*()]{6,50}$)(?=.*[A-Z].*$)(?=.*[a-z].*$)(?=.*[\\d].*$).*$']}
           externalError={state.signUpForm.errors.password}
@@ -74,19 +72,20 @@ const SignUpScreen = () => {
           secureTextEntry
           style={styles.input}
           value={state.signUpForm.confirm_password}
-          placeholder={'Confirm password'}
+          label={'Confirm password'}
           onChangeText={(value, isValid) => onSignUpFieldChange('confirm_password', value, isValid)}
           rules={['required', 'match']}
           matchValue={state.signUpForm.password}
           errorMessages={['Password cannot be empty', 'Must match your password']}
         />
       </FormWithValidation>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#ffffff',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

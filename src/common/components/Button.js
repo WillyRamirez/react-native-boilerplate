@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, TouchableHighlight } from 'react-native';
+import { StyleSheet, TouchableHighlight, Text } from 'react-native';
+import { colors } from '../Colors';
 
 const Button = ({ children, isDisabled, style, ...rest }) => {
 
@@ -12,27 +13,41 @@ const Button = ({ children, isDisabled, style, ...rest }) => {
       ]}
       {...rest}
     >
-      {children}
+      <Text style={styles.text}>
+        {children}
+      </Text>
     </TouchableHighlight>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    width: '100%',
-    height: 40,
-    backgroundColor: 'red',
+    width: '50%',
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 25,
     marginBottom: 5,
+    backgroundColor: colors.mainColor,
+  },
+  text: {
+    fontSize: 15,
+    fontWeight: '900',
+    color: colors.mainColorContrastColor,
   },
   enabled: {
-    backgroundColor: 'red',
+    shadowColor: colors.mainColor,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.7,
+    elevation: 1,
   },
   disabled: {
-    backgroundColor: 'grey',
+    opacity: 0.5
   },
 });
 
-export default Button;
+export { Button };
