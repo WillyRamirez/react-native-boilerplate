@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, TouchableHighlight, Text } from 'react-native';
+import { StyleSheet, TouchableHighlight, Text, View } from 'react-native';
 import { colors } from '../Colors';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { IS_IOS } from '../Constants';
 
-const Button = ({ children, isDisabled, style, ...rest }) => {
+const Button = ({ children, isDisabled, style, rightIcon, ...rest }) => {
 
   return (
     <TouchableHighlight
@@ -13,9 +15,14 @@ const Button = ({ children, isDisabled, style, ...rest }) => {
       ]}
       {...rest}
     >
-      <Text style={styles.text}>
-        {children}
-      </Text>
+      <View style={styles.container}>
+        <Text style={styles.text}>
+          {children}
+        </Text>
+        { rightIcon &&
+        <FontAwesomeIcon style={styles.icon} icon={rightIcon} />
+        }
+      </View>
     </TouchableHighlight>
   );
 };
@@ -32,7 +39,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-    fontWeight: '900',
+    fontWeight: IS_IOS ? '900' : 'bold',
+    color: colors.mainColorContrastColor,
+  },
+  icon: {
+    marginLeft: 5,
     color: colors.mainColorContrastColor,
   },
   enabled: {
@@ -46,8 +57,13 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   disabled: {
-    opacity: 0.5
+    opacity: 0.5,
   },
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+
 });
 
 export { Button };

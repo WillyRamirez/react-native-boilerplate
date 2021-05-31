@@ -25,20 +25,31 @@ const Router = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={commonOptions}>
         {state.isSignedIn ? (
           <>
             <Stack.Screen name={screens.HOME_SCREEN} component={HomeScreen} />
           </>
         ) : (
           <>
-            <Stack.Screen name={screens.SIGN_IN_SCREEN} component={SignInScreen} />
+            <Stack.Screen name={screens.SIGN_IN_SCREEN} component={SignInScreen} options={hideTitle} />
             <Stack.Screen name={screens.SIGN_UP_SCREEN} component={SignUpScreen} />
           </>
         )}
       </Stack.Navigator>
     </NavigationContainer>
   );
+};
+
+const hideTitle = {
+  title: '',
+};
+const commonOptions = {
+  headerBackTitleVisible: false,
+  headerStyle: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+  },
 };
 
 export default Router;

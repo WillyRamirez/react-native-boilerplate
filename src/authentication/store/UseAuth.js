@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { api, initApi } from '../../common/api/Api';
+import { Alert } from 'react-native';
+import { api, initApi,  } from '../../common/api/Api';
 import secureStore from '../../common/SecureStorageService';
 import { AuthContext, types } from './AuthContext';
 
@@ -28,6 +29,7 @@ const UseAuth = () => {
     dispatch({ type: types.SIGN_IN_USER });
 
     const response = await api.signIn(state.signInForm.email.toLowerCase(), state.signInForm.password);
+    console.log('response: ', response);
 
     if (response.ok) {
       dispatch({ type: types.SIGN_IN_USER_SUCCESS, payload: { user: response.data.user } });
@@ -35,7 +37,7 @@ const UseAuth = () => {
       secureStore.set('refreshToken', response.data.refreshToken);
       secureStore.set('accessToken', response.data.accessToken);
     } else {
-      dispatch({ type: types.SIGN_IN_USER_FAIL, payload: { error: response.data.error } });
+      dispatch({ type: types.SIGN_IN_USER_FAIL, payload: { errors: response.data.errors } });
     }
   };
 

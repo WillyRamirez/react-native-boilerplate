@@ -3,22 +3,25 @@ import { StyleSheet, Text, ScrollView } from 'react-native';
 import { TextInputWithValidation, FormWithValidation, Button } from '../../common/components/';
 import { AuthContext } from '../store/AuthContext';
 import UseAuth from '../store/UseAuth';
+import { faArrowRight, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
 const SignUpScreen = () => {
   const { state } = useContext(AuthContext);
   const { onSignUpFieldChange, onSignUpFormSubmit } = UseAuth();
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.container} style={styles.scrollview}>
       <FormWithValidation
         style={styles.signUpForm}
         validFields={state.signUpForm.validFields}
         renderSubmitTouchable={formIsValid => (
           <Button
+            rightIcon={faArrowRight}
             isDisabled={!formIsValid}
             onPress={onSignUpFormSubmit}
           >
-            <Text>Sign up</Text>
+            <Text>SIGN UP</Text>
           </Button>
         )}
       >
@@ -26,6 +29,7 @@ const SignUpScreen = () => {
           style={styles.input}
           value={state.signUpForm.first_name}
           label={'First name'}
+          leftIcon={faUser}
           onChangeText={(value, isValid) => onSignUpFieldChange('first_name', value, isValid)}
           rules={['required', 'minStringLength:2', 'maxStringLength:30']}
           externalError={state.signUpForm.errors.first_name}
@@ -35,6 +39,7 @@ const SignUpScreen = () => {
           style={styles.input}
           value={state.signUpForm.last_name}
           label={'Last name'}
+          leftIcon={faUser}
           onChangeText={(value, isValid) => onSignUpFieldChange('last_name', value, isValid)}
           rules={['required', 'minStringLength:2', 'maxStringLength:30']}
           externalError={state.signUpForm.errors.last_name}
@@ -44,6 +49,7 @@ const SignUpScreen = () => {
           style={styles.input}
           value={state.signUpForm.username}
           label={'Username'}
+          leftIcon={faUser}
           onChangeText={(value, isValid) => onSignUpFieldChange('username', value, isValid)}
           rules={['required', 'minStringLength:2', 'maxStringLength:20']}
           externalError={state.signUpForm.errors.username}
@@ -53,6 +59,7 @@ const SignUpScreen = () => {
           style={styles.input}
           value={state.signUpForm.email}
           label={'Email'}
+          leftIcon={faEnvelope}
           onChangeText={(value, isValid) => onSignUpFieldChange('email', value, isValid)}
           rules={['required', 'isEmail']}
           externalError={state.signUpForm.errors.email}
@@ -63,6 +70,7 @@ const SignUpScreen = () => {
           style={styles.input}
           value={state.signUpForm.password}
           label={'Password'}
+          leftIcon={faShieldAlt}
           onChangeText={(value, isValid) => onSignUpFieldChange('password', value, isValid)}
           rules={['required', 'matchRegexp:^(?=[a-zA-Z\\d_:?.+\\-=!#@$%^&*()]{6,50}$)(?=.*[A-Z].*$)(?=.*[a-z].*$)(?=.*[\\d].*$).*$']}
           externalError={state.signUpForm.errors.password}
@@ -73,6 +81,7 @@ const SignUpScreen = () => {
           style={styles.input}
           value={state.signUpForm.confirm_password}
           label={'Confirm password'}
+          leftIcon={faShieldAlt}
           onChangeText={(value, isValid) => onSignUpFieldChange('confirm_password', value, isValid)}
           rules={['required', 'match']}
           matchValue={state.signUpForm.password}
@@ -84,8 +93,10 @@ const SignUpScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  scrollview: {
     backgroundColor: '#ffffff',
+  },
+  container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

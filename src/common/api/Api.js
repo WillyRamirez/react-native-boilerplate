@@ -1,7 +1,7 @@
 import { create } from 'apisauce';
 import { BASE_URL } from '../Config';
 import secureStore from '../SecureStorageService';
-
+console.log('BASE_URL: ', BASE_URL);
 export const apiConfig = create({
   baseURL: BASE_URL,
   headers: { Accept: 'application/json' },
@@ -16,6 +16,11 @@ export const initApi = async (accessToken) => {
 };
 
 export const api = {
+  testApi() {
+    return apiConfig
+      .get('/')
+      .then(response => response)
+  },
   signIn(email, password) {
     return apiConfig
       .post('/login', { email, password })

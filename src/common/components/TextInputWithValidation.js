@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Text, StyleSheet, Animated, Easing } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import validators from './Validators';
 import { colors } from '../Colors';
+import { IS_IOS } from '../Constants';
 
 const TextInputWithValidation = ({
   rules,
@@ -11,6 +13,7 @@ const TextInputWithValidation = ({
   matchValue,
   errorMessages,
   label,
+  leftIcon,
   style,
   value,
   ...rest
@@ -49,7 +52,7 @@ const TextInputWithValidation = ({
       toValue: isFocused || value ? 0 : 25,
       duration: 300,
       easing: Easing.elastic(),
-      useNativeDriver: true,
+      useNativeDriver: IS_IOS,
     }).start();
   }, [isFocused]);
 
@@ -61,7 +64,7 @@ const TextInputWithValidation = ({
     <View>
       <Animated.View
         style={[
-          styles.inputWrapper,
+          styles.container,
           isFocused && styles.focusStyle,
           {
             shadowOpacity: animatedFocus.interpolate({
@@ -70,19 +73,24 @@ const TextInputWithValidation = ({
             }),
           }
         ]}>
-        <Animated.Text
-          style={[styles.label, { transform: [{ translateY: animatedFocus }]}]}
-        >
-          {label}
-        </Animated.Text>
-        <TextInput
-          style={[styles.input, style, isFocused && styles.inputFocus]}
-          onChangeText={onChange}
-          value={value}
-          {...rest}
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
-        />
+        <View>
+          <FontAwesomeIcon style={styles.icon} icon={leftIcon} />
+        </View>
+        <View style={styles.inputWrapper}>
+          <Animated.Text
+            style={[styles.label, { transform: [{ translateY: animatedFocus }]}]}
+          >
+            {label}
+          </Animated.Text>
+          <TextInput
+            style={[styles.input, style, isFocused && styles.inputFocus]}
+            onChangeText={onChange}
+            value={value}
+            {...rest}
+            onFocus={() => setFocus(true)}
+            onBlur={() => setFocus(false)}
+          />
+        </View>
       </Animated.View>
       <View>
         <Text style={styles.errorStyles}>{error}</Text>
@@ -92,21 +100,32 @@ const TextInputWithValidation = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.subTextColor,
+  },
+  icon: {
+    marginTop: 10,
+    marginHorizontal: 5,
+    color: colors.subTextColor,
+  },
   inputWrapper: {
+    width: '90%',
     height: 56,
+
   },
   input: {
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.subTextColor,
+    borderBottomWidth: 0,
     color: colors.mainTextColor,
-    fontWeight: '800',
+    fontWeight: IS_IOS ? '800' : 'bold',
   },
   focusStyle: {
     backgroundColor: '#ffffff',
-    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: 'rgba(169,169, 169, 0.5)',
     shadowColor: 'rgba(169,169, 169, 0.9)',
     shadowOffset: {
@@ -114,7 +133,7 @@ const styles = StyleSheet.create({
       height: 5,
     },
     shadowRadius: 5,
-    elevation: 6,
+    elevation: 16,
   },
   inputFocus: {
     borderBottomWidth: 0,
@@ -124,14 +143,14 @@ const styles = StyleSheet.create({
     color: colors.subTextColor,
     marginLeft: 3,
     fontSize: 13,
-    fontWeight: '900',
+    fontWeight: IS_IOS ? '900' : 'bold',
   },
   errorStyles: {
     marginLeft: 3,
     marginTop: 3,
     marginBottom: 17,
     fontSize: 13,
-    fontWeight: '700',
+    fontWeight: IS_IOS ? '700' : 'bold',
     color: 'red',
   },
 });

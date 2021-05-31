@@ -57,7 +57,7 @@ export function authReducer(state, action) {
       return update(state, {
         isLoading: { $set: false },
         isSignedIn: { $set: false },
-        signInForm: { errors: { $set: action.payload.error } },
+        signInForm: { errors: { $set: action.payload.errors } },
       });
     case types.SIGN_UP_USER_FAIL: {
       let errorObj;
