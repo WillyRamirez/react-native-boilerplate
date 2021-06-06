@@ -12,7 +12,6 @@ import { IS_IOS } from '../../common/Constants';
 const SignInScreen = ({ navigation }) => {
   const { state } = useContext(AuthContext);
   const { onSignInFieldChange, onLoginPress } = UseAuth();
-  console.log('state: ', state);
 
   return (
     <ScrollView contentContainerStyle={styles.container} style={styles.scrollview}>
