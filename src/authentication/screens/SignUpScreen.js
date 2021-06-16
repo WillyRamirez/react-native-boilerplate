@@ -1,66 +1,101 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TextInput, TouchableHighlight, View } from 'react-native';
-import { screens } from '../../Router';
+import { StyleSheet, Text, ScrollView } from 'react-native';
+import { TextInputWithValidation, FormWithValidation, Button } from '../../common/components/';
 import { AuthContext } from '../store/AuthContext';
 import UseAuth from '../store/UseAuth';
+import { faArrowRight, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
 
 const SignUpScreen = () => {
   const { state } = useContext(AuthContext);
   const { onSignUpFieldChange, onSignUpFormSubmit } = UseAuth();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.signUpForm}>
-        <TextInput
+    <ScrollView contentContainerStyle={styles.container} style={styles.scrollview}>
+      <FormWithValidation
+        style={styles.signUpForm}
+        validFields={state.signUpForm.validFields}
+        renderSubmitTouchable={formIsValid => (
+          <Button
+            rightIcon={faArrowRight}
+            isDisabled={!formIsValid}
+            onPress={onSignUpFormSubmit}
+          >
+            <Text>SIGN UP</Text>
+          </Button>
+        )}
+      >
+        <TextInputWithValidation
           style={styles.input}
           value={state.signUpForm.first_name}
-          placeholder={'First name'}
-          onChangeText={value => onSignUpFieldChange('first_name', value)}
+          label={'First name'}
+          leftIcon={faUser}
+          onChangeText={(value, isValid) => onSignUpFieldChange('first_name', value, isValid)}
+          rules={['required', 'minStringLength:2', 'maxStringLength:30']}
+          externalError={state.signUpForm.errors.first_name}
+          errorMessages={['First name cannot be empty', 'Must be between 2 and 30 characters', 'Must be between 2 and 30 characters']}
         />
-        <TextInput
+        <TextInputWithValidation
           style={styles.input}
           value={state.signUpForm.last_name}
-          placeholder={'Last name'}
-          onChangeText={value => onSignUpFieldChange('last_name', value)}
+          label={'Last name'}
+          leftIcon={faUser}
+          onChangeText={(value, isValid) => onSignUpFieldChange('last_name', value, isValid)}
+          rules={['required', 'minStringLength:2', 'maxStringLength:30']}
+          externalError={state.signUpForm.errors.last_name}
+          errorMessages={['Last name cannot be empty', 'Must be between 2 and 30 characters', 'Must be between 2 and 30 characters']}
         />
-        <TextInput
+        <TextInputWithValidation
           style={styles.input}
           value={state.signUpForm.username}
-          placeholder={'Username'}
-          onChangeText={value => onSignUpFieldChange('username', value)}
+          label={'Username'}
+          leftIcon={faUser}
+          onChangeText={(value, isValid) => onSignUpFieldChange('username', value, isValid)}
+          rules={['required', 'minStringLength:2', 'maxStringLength:20']}
+          externalError={state.signUpForm.errors.username}
+          errorMessages={['Username cannot be empty', 'Must be between 2 and 30 characters', 'Must be between 2 and 30 characters']}
         />
-        <TextInput
+        <TextInputWithValidation
           style={styles.input}
           value={state.signUpForm.email}
-          placeholder={'Email'}
-          onChangeText={value => onSignUpFieldChange('email', value)}
+          label={'Email'}
+          leftIcon={faEnvelope}
+          onChangeText={(value, isValid) => onSignUpFieldChange('email', value, isValid)}
+          rules={['required', 'isEmail']}
+          externalError={state.signUpForm.errors.email}
+          errorMessages={['Email cannot be empty', 'Please enter a valid email address']}
         />
-        <TextInput
+        <TextInputWithValidation
           secureTextEntry
           style={styles.input}
           value={state.signUpForm.password}
-          placeholder={'Password'}
-          onChangeText={value => onSignUpFieldChange('password', value)}
+          label={'Password'}
+          leftIcon={faShieldAlt}
+          onChangeText={(value, isValid) => onSignUpFieldChange('password', value, isValid)}
+          rules={['required', 'matchRegexp:^(?=[a-zA-Z\\d_:?.+\\-=!#@$%^&*()]{6,50}$)(?=.*[A-Z].*$)(?=.*[a-z].*$)(?=.*[\\d].*$).*$']}
+          externalError={state.signUpForm.errors.password}
+          errorMessages={['Password cannot be empty', 'Must be between 6 and 50 characters and contain at least one upper case latter and at least one number']}
         />
-        <TextInput
+        <TextInputWithValidation
           secureTextEntry
           style={styles.input}
           value={state.signUpForm.confirm_password}
-          placeholder={'Confirm password'}
-          onChangeText={value => onSignUpFieldChange('confirm_password', value)}
+          label={'Confirm password'}
+          leftIcon={faShieldAlt}
+          onChangeText={(value, isValid) => onSignUpFieldChange('confirm_password', value, isValid)}
+          rules={['required', 'match']}
+          matchValue={state.signUpForm.password}
+          errorMessages={['Password cannot be empty', 'Must match your password']}
         />
-        <TouchableHighlight
-          style={styles.loginButton}
-          onPress={onSignUpFormSubmit}
-        >
-          <Text>Sign up</Text>
-        </TouchableHighlight>
-      </View>
-    </View>
+      </FormWithValidation>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollview: {
+    backgroundColor: '#ffffff',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
