@@ -1,12 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, TextInput } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import UseAuth from '../../authentication/store/UseAuth';
 
 const HomeScreen = () => {
   const { onLogoutPress, testa } = UseAuth();
 
   return (
-    <View>
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.container}
+      style={styles.scrollview}
+      enableOnAndroid
+    >
       <TouchableHighlight
         style={styles.loginButton}
         onPress={onLogoutPress}
@@ -19,11 +24,16 @@ const HomeScreen = () => {
       >
         <Text>test</Text>
       </TouchableHighlight>
-    </View>
+      <TextInput style={{ marginTop: 400, width: '100%', height: 40, borderWidth: 2, }}/>
+    </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'green',
+  },
   loginButton: {
     width: '100%',
     backgroundColor: 'red',
