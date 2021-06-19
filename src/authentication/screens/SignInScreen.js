@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import UseAuth from '../store/UseAuth';
 import { TextInputWithValidation, FormWithValidation, Button, Link, Title } from '../../common/components/';
 import { colors } from '../../common/Colors';
@@ -14,7 +15,11 @@ const SignInScreen = ({ navigation }) => {
   const { onSignInFieldChange, onLoginPress } = UseAuth();
 
   return (
-    <ScrollView contentContainerStyle={styles.container} style={styles.scrollview}>
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.container}
+      style={styles.scrollview}
+      enableOnAndroid
+    >
       <View style={styles.titleContainer}>
         <Title>Sign in</Title>
         <Text style={styles.subText}>Please sign in to continue</Text>
@@ -56,7 +61,7 @@ const SignInScreen = ({ navigation }) => {
         <Link textStyle={styles.firstLinkStyle} onPress={() => navigation.navigate(screens.SIGN_UP_SCREEN)}>Don't have an account?</Link>
         <Link textStyle={styles.secondLinkStyle} onPress={() => navigation.navigate(screens.SIGN_UP_SCREEN)}>Sing Up</Link>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 

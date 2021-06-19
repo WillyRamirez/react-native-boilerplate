@@ -1,17 +1,23 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, ScrollView } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { TextInputWithValidation, FormWithValidation, Button } from '../../common/components/';
 import { AuthContext } from '../store/AuthContext';
 import UseAuth from '../store/UseAuth';
 import { faArrowRight, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
+import { IS_IOS } from '../../common/Constants';
 
 const SignUpScreen = () => {
   const { state } = useContext(AuthContext);
   const { onSignUpFieldChange, onSignUpFormSubmit } = UseAuth();
 
   return (
-    <ScrollView contentContainerStyle={styles.container} style={styles.scrollview}>
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.container}
+      style={styles.scrollview}
+      enableOnAndroid
+    >
       <FormWithValidation
         style={styles.signUpForm}
         validFields={state.signUpForm.validFields}
@@ -88,7 +94,7 @@ const SignUpScreen = () => {
           errorMessages={['Password cannot be empty', 'Must match your password']}
         />
       </FormWithValidation>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -97,10 +103,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    paddingBottom: IS_IOS ? 20 : 50,
   },
   signUpForm: {
     width: '100%',
