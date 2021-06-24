@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, useHeaderHeight } from '@react-navigation/stack';
 import SignInScreen from './authentication/screens/SignInScreen';
 import SignUpScreen from './authentication/screens/SignUpScreen';
+import ForgotPasswordScreen from './authentication/screens/ForgotPasswordScreen';
 import HomeScreen from './home/screens/HomeScreen';
 import UseAuth from './authentication/store/UseAuth';
 import { AuthContext } from './authentication/store/AuthContext';
@@ -14,6 +15,7 @@ export const screens = {
   SIGN_UP_SCREEN: 'Sign up',
   SIGN_IN_SCREEN: 'Sign in',
   HOME_SCREEN: 'Home',
+  FORGOT_PASSWORD_SCREEN: 'Forgot Password',
 };
 
 const Router = () => {
@@ -35,6 +37,7 @@ const Router = () => {
           <>
             <Stack.Screen name={screens.SIGN_IN_SCREEN} component={SignInScreen} options={hideTitle} />
             <Stack.Screen name={screens.SIGN_UP_SCREEN} component={SignUpScreen} />
+            <Stack.Screen name={screens.FORGOT_PASSWORD_SCREEN} component={ForgotPasswordScreen} />
           </>
         )}
       </Stack.Navigator>

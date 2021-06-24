@@ -15,6 +15,10 @@ export const types = {
   LOG_OUT: 'log_out',
   ON_SIGN_IN_FIELD_CHANGE: 'on_sign_in_field_change',
   ON_SIGN_UP_FIELD_CHANGE: 'on_sign_up_field_change',
+  ON_FORGOT_PASSWORD_FIELD_CHANGE: 'on_forgot_password_field_change',
+  FORGOT_PASSWORD: 'forgot_password',
+  FORGOT_PASSWORD_SUCCESS: 'forgot_password_success',
+  FORGOT_PASSWORD_FAIL: 'forgot_password_fail',
 };
 
 const initialState = {
@@ -23,6 +27,11 @@ const initialState = {
     validFields: [],
     email: '',
     password: '',
+  },
+  forgotPasswordForm: {
+    email: '',
+    validFields: [],
+    success: false,
   },
   user: {},
   signUpForm: {
@@ -43,6 +52,7 @@ export function authReducer(state, action) {
   switch (action.type) {
     case types.SET_SIGNED_IN:
       return update(state, { isSignedIn: { $set: action.payload.isSignedIn } });
+    case types.FORGOT_PASSWORD:
     case types.SIGN_IN_USER:
     case types.SIGN_UP_USER:
       return update(state, { isLoading: { $set: true } });
@@ -86,6 +96,25 @@ export function authReducer(state, action) {
         },
       });
     }
+    case types.ON_FORGOT_PASSWORD_FIELD_CHANGE: {
+      const validFields = getValidFields(state.forgotPasswordForm.validFields, action.payload.key, action.payload.isValid)
+      return update(state, {
+        forgotPasswordForm: {
+          [action.payload.key]: { $set: action.payload.value },
+          validFields: { $set: validFields },
+        },
+      });
+    }
+    case types.FORGOT_PASSWORD_SUCCESS:
+      return update(state, {
+        isLoading: { $set: false },
+        forgotPasswordForm: { success: { $set: true } },
+      });
+    case types.FORGOT_PASSWORD_FAIL:
+      return update(state, {
+        isLoading: { $set: false },
+        forgotPasswordForm: { success: { $set: false } },
+      });
     default:
       return state;
   }

@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     color: colors.subTextColor,
     marginLeft: 3,
     fontSize: 13,
-    fontWeight: IS_IOS ? '900' : 'bold',
+    fontWeight: IS_IOS ? '700' : 'bold',
   },
   errorStyles: {
     marginLeft: 3,

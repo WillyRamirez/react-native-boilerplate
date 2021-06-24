@@ -15,7 +15,7 @@ const Title = ({ children }) => {
 const styles = StyleSheet.create({
   text: {
     fontSize: 30,
-    fontWeight: IS_IOS ? '900' : 'bold',
+    fontWeight: IS_IOS ? '700' : 'bold',
     color: colors.mainTextColor,
   },
 });
