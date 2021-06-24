@@ -2,8 +2,13 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 const FormWithValidation = ({ children, style, validFields, renderSubmitTouchable }) => {
-  const ValidatableInputs = children.filter(child => {
-    return typeof child.props.rules !== 'undefined';
+
+  let ValidatableInputs = [];
+
+  React.Children.map(children, (child, i) => {
+    if (typeof child.props.rules !== 'undefined') {
+      return ValidatableInputs.push(child);
+    }
   });
 
   const formIsValid = validFields.length === ValidatableInputs.length;

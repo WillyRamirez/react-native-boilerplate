@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { Alert } from 'react-native';
-import { api, initApi,  } from '../../common/api/Api';
+import { api, initApi, } from '../../common/api/Api';
 import secureStore from '../../common/SecureStorageService';
 import { AuthContext, types } from './AuthContext';
 
@@ -25,11 +24,14 @@ const UseAuth = () => {
     dispatch({ type: types.ON_SIGN_UP_FIELD_CHANGE, payload: { key, value, isValid } });
   };
 
+  const onForgotPasswordFieldChange = (key, value, isValid) => {
+    dispatch({ type: types.ON_FORGOT_PASSWORD_FIELD_CHANGE, payload: { key, value, isValid } });
+  };
+
   const onLoginPress = async () => {
     dispatch({ type: types.SIGN_IN_USER });
 
     const response = await api.signIn(state.signInForm.email.toLowerCase(), state.signInForm.password);
-    console.log('response: ', response);
 
     if (response.ok) {
       dispatch({ type: types.SIGN_IN_USER_SUCCESS, payload: { user: response.data.user } });
@@ -66,9 +68,15 @@ const UseAuth = () => {
     dispatch({ type: types.SET_SIGNED_IN, payload: { isSignedIn: false } });
   };
 
-  const testa = async () => {
-    const response = await api.getUsers();
-    console.log('response: ', response);
+  const onForgotPasswordPress = async () => {
+    dispatch({ type: types.FORGOT_PASSWORD });
+    const response = await api.forgotPassword(state.forgotPasswordForm.email.toLowerCase());
+
+    if (response.ok) {
+      dispatch({ type: types.FORGOT_PASSWORD_SUCCESS });
+    } else {
+      dispatch({ type: types.FORGOT_PASSWORD_FAIL });
+    }
   };
 
   return {
@@ -76,8 +84,9 @@ const UseAuth = () => {
     onLogoutPress,
     onSignInFieldChange,
     onSignUpFieldChange,
+    onForgotPasswordFieldChange,
     onSignUpFormSubmit,
-    testa,
+    onForgotPasswordPress,
     onAppInit,
   };
 };

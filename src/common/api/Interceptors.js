@@ -25,9 +25,8 @@ apiConfig.axiosInstance.interceptors.response.use(
             secureStore.set('accessToken', accessToken);
 
             resolve(axios.request(originalReq));
-
           }else {
-            console.log('response refreshToken: ', response);
+            // todo: add error handling
           }
           resolve(response);
         }

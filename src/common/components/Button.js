@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-    fontWeight: IS_IOS ? '900' : 'bold',
+    fontWeight: IS_IOS ? '700' : 'bold',
     color: colors.mainColorContrastColor,
   },
   icon: {
@@ -47,14 +47,7 @@ const styles = StyleSheet.create({
     color: colors.mainColorContrastColor,
   },
   enabled: {
-    shadowColor: colors.mainColor,
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowRadius: 5,
-    shadowOpacity: 0.7,
-    elevation: 1,
+    opacity: 1,
   },
   disabled: {
     opacity: 0.5,
@@ -63,7 +56,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-
 });
 
 export { Button };
